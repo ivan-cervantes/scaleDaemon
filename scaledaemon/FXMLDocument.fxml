@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="413.0" prefWidth="627.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scaledaemon.FXMLDocumentController">
+    <children>
+        <Label fx:id="label" alignment="TOP_LEFT" layoutX="247.0" layoutY="39.0" minHeight="16" minWidth="69" prefHeight="29.0" prefWidth="333.0" text="Lector de báscula">
+         <font>
+            <Font name="Verdana" size="24.0" />
+         </font></Label>
+      <ImageView fx:id="imageLobo" fitHeight="71.0" fitWidth="237.0" layoutX="-7.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true" />
+      <Label layoutX="35.0" layoutY="126.0" prefHeight="27.0" prefWidth="169.0" text="Puertos disponibles:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="comboPort" layoutX="219.0" layoutY="120.0" prefHeight="39.0" prefWidth="226.0" />
+      <Button fx:id="buttonInitiateDaemon" layoutX="455.0" layoutY="144.0" mnemonicParsing="false" onAction="#initiateDaemon" prefHeight="30.0" prefWidth="152.0" text="Iniciar lector">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Label layoutX="35.0" layoutY="169.0" prefHeight="27.0" prefWidth="169.0" text="Conexiones activas">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TableView layoutX="36.0" layoutY="199.0" prefHeight="200.0" prefWidth="571.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="C1" />
+          <TableColumn prefWidth="75.0" text="C2" />
+        </columns>
+      </TableView>
+      <Button fx:id="buttonDetectPort" layoutX="455.0" layoutY="105.0" mnemonicParsing="false" onAction="#fillComboPort" prefHeight="30.0" prefWidth="152.0" text="Detectar puertos">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+    </children>
+</AnchorPane>
