@@ -32,7 +32,7 @@ public class SerialProgram implements Runnable{
     /************************
      * Constructor definition
      ***********************/
-    public SerialProgram(CommPortIdentifier portId, int baudRate, ServerSocket connectionSocket) throws IOException{
+    public SerialProgram(CommPortIdentifier portId, int baudRate) throws IOException{
          
         this.portId = portId;
         this.baudRate = baudRate;
@@ -74,7 +74,7 @@ public class SerialProgram implements Runnable{
          
         // Add an event Listener
         try{
-            serialPort.addEventListener(new SerialReader(is, connectionSocket));
+            serialPort.addEventListener(new SerialReader(is));
         } catch (TooManyListenersException ev){
             System.err.println("Too many Listeners! " + ev);
         }

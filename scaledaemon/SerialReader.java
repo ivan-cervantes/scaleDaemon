@@ -24,15 +24,10 @@ public class SerialReader implements SerialPortEventListener{
  
     private BufferedReader inStream;
     private BufferedWriter socketWriter;
-    private ServerSocket connectionSocket; 
-    private Socket clientSocket;
-     
      
     // Constructor
-    public SerialReader(InputStream is, ServerSocket connectionSocket) throws IOException{
-        this.connectionSocket = connectionSocket;
+    public SerialReader(InputStream is) throws IOException{
         inStream = new BufferedReader(new InputStreamReader(is));
-        //socketWriter = new BufferedWriter(new OutputStreamWriter(connectionSocket.getOutputStream()));
     }
      
      
@@ -57,8 +52,8 @@ public class SerialReader implements SerialPortEventListener{
         case SerialPortEvent.DATA_AVAILABLE:
             try {
                 
-                clientSocket = connectionSocket.accept();
-                socketWriter = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+                //clientSocket = connectionSocket.accept();
+                //socketWriter = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
                 
                 if(inStream.ready()) {
                     rawInput = inStream.readLine();
@@ -66,13 +61,13 @@ public class SerialReader implements SerialPortEventListener{
                         System.out.println("No input on serial port");
                         System.exit(0);
                     }
-                    rawInput = rawInput.trim();
-                    rawInput = rawInput.split("KG")[0];
-                    if(isNumeric(rawInput)) {
-                        socketWriter.write(rawInput);
-                        //System.out.println(rawInput);
+                    //rawInput = rawInput.trim();
+                    //rawInput = rawInput.split("KG")[0];
+                    //if(isNumeric(rawInput)) {
+                        System.out.println(rawInput);
+                        WeightVo.weight = rawInput;
                         
-                    }
+                    //}
                 }
             } catch (IOException e) {
                 e.printStackTrace();

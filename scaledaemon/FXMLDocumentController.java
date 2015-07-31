@@ -6,11 +6,8 @@
 package scaledaemon;
 
 import gnu.io.CommPortIdentifier;
-import gnu.io.NoSuchPortException;
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -21,16 +18,17 @@ import java.util.Enumeration;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -46,6 +44,10 @@ public class FXMLDocumentController implements Initializable {
     @FXML private Button buttonDetectPort = new Button();
     @FXML private Button buttonInitiateDaemon = new Button();
     @FXML private ImageView imageLobo;
+    @FXML private TableView<ConnectionsVo> tableConnections;
+    @FXML private TableColumn<ConnectionsVo, String> id;
+    @FXML private TableColumn<ConnectionsVo, String> ip;
+    ObservableList<ConnectionsVo> data = FXCollections.observableArrayList();   
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -53,6 +55,14 @@ public class FXMLDocumentController implements Initializable {
         Image image = new Image(file.toURI().toString());
         imageLobo.setImage(image);
         this.fillComboPort();
+        
+        //id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        //ip.setCellValueFactory(new PropertyValueFactory<>("ip"));
+        
+        //tableConnections.setItems(data);
+        //data.add(new ConnectionsVo("VENFI-PVB","LOCALHOST"));
+        //data.add(new ConnectionsVo("VENFI-PVB2","LOCALHOST"));
+        
     }
     
     @FXML
@@ -87,7 +97,7 @@ public class FXMLDocumentController implements Initializable {
         ServerSocket clientSocket;  
         try {
             clientSocket = new ServerSocket(6500);
-        
+                        
             if(comboPort.getValue().toString().equals("") || comboPort.getValue().toString().equals("NO SE DETECTARON PUERTOS")) {
                 alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Lobo Software");
@@ -96,13 +106,24 @@ public class FXMLDocumentController implements Initializable {
                 alert.showAndWait();
             } else {
                 portId = CommPortIdentifier.getPortIdentifier(comboPort.getValue().toString());
-                //Executors.newFixedThreadPool(5);
-                //while(true) {
-                    //Socket connectionSocket = clientSocket.accept();   
-                    //Runnable worker = new SerialProgram(portId, baudRate, clientSocket);
-                    //executor.execute(worker);
-                    new SerialProgram(portId, baudRate, clientSocket);
-                //}
+//                Executors.newFixedThreadPool(5);
+                new SerialProgram(portId, baudRate);
+                
+                
+                
+                while(true) {
+//                    data.add(new ConnectionsVo("VENFI-PVB3","LOCALHOST"));
+                    Socket connectionSocket = clientSocket.accept();   
+                    PrintWriter out = new PrintWriter(connectionSocket.getOutputStream(), true);
+                    BufferedReader in = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+                    //System.out.println(connectionSocket.toString());
+                                      
+                    while(connectionSocket.isConnected()){
+                        out.println(WeightVo.weight);
+                        
+                    }
+                    
+                }
             }
         
         } catch (Exception ex) {
@@ -133,7 +154,7 @@ public class FXMLDocumentController implements Initializable {
             alert.getDialogPane().setExpandableContent(expContent);
             alert.showAndWait();
         } finally {
-            executor.shutdown();
+            //executor.shutdown();
         }
          
     }
